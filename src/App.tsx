@@ -17,7 +17,7 @@ function BlankLayout() {
 }
 
 function App() {
-	return <div>Home</div>
+	
 	return (
 		<Suspense fallback={<FullPageSpinner />}>
 			<Routes>
