@@ -1,8 +1,9 @@
 
 
 import { Component } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card'
 import { LoginForm } from '../components/forms/login'
+import { Link } from 'react-router-dom'
 
 export default function LoginPage() {
 	return (
@@ -20,6 +21,14 @@ export default function LoginPage() {
 				<CardContent>
 					<LoginForm />
 				</CardContent>
+				<CardFooter>
+					<CardDescription className='mx-auto underline'>
+						<Link to='/auth/register'>
+							Don&apos;t have an account?{' '}
+							<span className='font-bold'>Sign Up</span>
+						</Link>
+					</CardDescription>
+				</CardFooter>
 			</Card>
 		</div>
 	)

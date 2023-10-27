@@ -2,7 +2,8 @@ import { Loader2 } from 'lucide-react'
 import { Suspense, lazy } from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
-const LoginPage = lazy(() => import('./pages/LoginPage'))
+const LoginPage = lazy(() => import('./pages/login-page'))
+const RegisterPage = lazy(() => import('./pages/register-page'))
 
 function FullPageSpinner() {
 	return (
