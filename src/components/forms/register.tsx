@@ -4,17 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-import { Button } from '@/components/ui/button'
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+
 import { Loader2 } from 'lucide-react'
-import useRegister from '@/hooks/useRegister'
+import useRegister from '../../hooks/useRegister'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
+import { Input } from '../ui/input'
+import { Button } from '../ui/button'
+
 
 const registerFormSchema = z.object({
 	name: z.string().min(3),

@@ -1,4 +1,4 @@
-import { RegisterForm } from '@/components/forms/register'
+import { RegisterForm } from '../components/forms/register'
 import {
 	Card,
 	CardContent,
@@ -6,7 +6,7 @@ import {
 	CardHeader,
 	CardFooter,
 	CardTitle,
-} from '@/components/ui/card'
+} from '../components/ui/card'
 import { Component } from 'lucide-react'
 
 export default function RegisterPage() {

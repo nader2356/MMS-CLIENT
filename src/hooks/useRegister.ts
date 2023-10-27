@@ -1,8 +1,9 @@
 import { useMutation } from 'react-query'
 import { z } from 'zod'
 import Cookies from 'js-cookie'
-import api, { HTTPMethod } from '@/lib/api'
+
 import { useNavigate } from 'react-router-dom'
+import api, { HTTPMethod } from '../lib/api'
 
 const RegisterRequest = z.object({
 	email: z.string().email(),
