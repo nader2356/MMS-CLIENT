@@ -2,7 +2,7 @@
 import { createContext } from 'react'
 import { useQueryClient } from 'react-query'
 import useUserMe from '../hooks/useUserMe'
-import FullPageSpinner from '../components/FullPageSpinner'
+import FullPageSpinner from '../components/full-page-spinner'
 
 type User = {
 	id: string
