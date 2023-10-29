@@ -16,7 +16,7 @@ export default function HomePage() {
 	return (
 		<>
 			<NavBar />
-			<main className='container grid place-content-center min-h-screen px-11 py-12'>
+			<main className='container grid place-content-center min-h-screen overflow-hidden  py-12'>
 				<Card className='shadow-lg'>
 					<CardHeader className='border-b p-2 text-center text-xl'>
 						Your list of money stacks
