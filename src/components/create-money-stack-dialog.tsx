@@ -17,7 +17,7 @@ export default function CreateMoneyStackDialog() {
 
 	return (
 		<Dialog open={isShowDialog} onOpenChange={setIsShowDialog}>
-			<DialogTrigger className={cn('w-full mt-4', buttonVariants())}>
+			<DialogTrigger className={cn('w-full mb-4', buttonVariants())}>
 				Add a money stack
 			</DialogTrigger>
 			<DialogContent>

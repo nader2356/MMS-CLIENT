@@ -4,10 +4,8 @@ import useMoneyStacks from "../hooks/useMoneyStacks"
 import { Card, CardContent, CardHeader } from '../components/ui/card'
 
 import { Loader2 } from 'lucide-react'
-import { buttonVariants } from '../components/ui/button'
-import { Link } from 'react-router-dom'
-import { cn } from '@/lib/utils'
-import CreateMoneyStackDialog from '../components/create-money-stack-dialog'
+
+import MoneyStack from "../components/money-stack"
 
 export default function HomePage() {
 	const { data: moneyStacks, isLoading: isLoadingMoneyStacks } =
@@ -27,35 +25,19 @@ export default function HomePage() {
 								<Loader2 className='animate-spin' size={50} />
 							</div>
 						)}
-						{!isLoadingMoneyStacks && (
+						{!isLoadingMoneyStacks && moneyStacks?.length === 0 && (
+							<div className='grid place-content-center p-10'>
+								No Money Stacks
+							</div>
+						)}
+						{!isLoadingMoneyStacks && moneyStacks?.length !== 0 && (
 							<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
 								{moneyStacks?.map((moneyStack:any) => (
-									<div
-										key={moneyStack.id}
-										className='border text-center rounded-sm shadow-md'
-									>
-										<div className='p-8'>
-											<div className='text-2xl truncate'>
-												{moneyStack.title}
-											</div>
-											<div className='text-slate-600'>
-												{moneyStack.currentAmount / 1000}DT
-											</div>
-										</div>
-										<Link
-											to={moneyStack.id}
-											className={cn(
-												buttonVariants({ size: 'sm' }),
-												'w-full rounded-b-sm rounded-t-none'
-											)}
-										>
-											View
-										</Link>
-									</div>
+									<MoneyStack key={moneyStack.id} moneyStack={moneyStack} />
 								))}
 							</div>
 						)}
-						<CreateMoneyStackDialog />
+				
 					</CardContent>
 				</Card>
 			</main>
