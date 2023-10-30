@@ -8,7 +8,7 @@ import {
 } from '../components/ui/dialog'
 
 import { buttonVariants } from './ui/button'
-import { CreateMoneyStackForm } from './forms/create-money-stack'
+import { CreateMoneyStackForm } from './forms/create-money-stack-form'
 import { useState } from 'react'
 import { cn } from '../lib/utils'
 
