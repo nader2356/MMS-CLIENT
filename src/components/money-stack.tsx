@@ -33,7 +33,7 @@ export default function MoneyStack({ moneyStack }: Props) {
 				)}
 			</div>
 			<Link
-				to={id}
+				to={`money-stacks/${id}`}
 				className={cn(
 					buttonVariants({ size: 'sm' }),
 					'w-full rounded-b-sm rounded-t-none'
