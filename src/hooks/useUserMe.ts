@@ -33,7 +33,7 @@ function useUserMe() {
 	const { mutate: refresh } = useRefresh()
 
 	return useQuery({
-		queryKey: 'userMe',
+		queryKey: ['userMe', localStorage.getItem('accessToken')],
 		queryFn: function () {
 			return userMe(undefined, {
 				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,

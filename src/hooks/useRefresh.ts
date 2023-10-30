@@ -5,11 +5,15 @@ import api, { HTTPMethod } from '../lib/api'
 import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import AuthContext from '../contexts/AuthContext'
+import { AxiosError } from 'axios'
 
 
 const RefreshRequest = z.void()
 
-const RefreshResponse = z.void()
+const RefreshResponse = z.object({
+	accessToken: z.string(),
+	refreshToken: z.string(),
+})
 
 const refresh = api<
 	z.infer<typeof RefreshRequest>,
@@ -32,11 +36,25 @@ function useRefresh() {
 				Authorization: `Bearer ${Cookies.get('refreshToken')}`,
 			})
 		},
-		onSuccess() {},
-		onError() {
-			clearUserMe()
-			navigate('/auth')
-		},
+			onSuccess(data) {
+				const { accessToken, refreshToken } = data
+	
+				localStorage.setItem('accessToken', accessToken)
+	
+				Cookies.remove('refreshToken')
+				Cookies.set('refreshToken', refreshToken, {
+					expires: 7,
+					path: '/',
+					sameSite: 'strict',
+				})
+			},
+			onError(error) {
+				if (error instanceof AxiosError) {
+					clearUserMe()
+					navigate('/auth')
+				}
+			},
+		
 	})
 }
 
