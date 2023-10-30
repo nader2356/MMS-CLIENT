@@ -2,7 +2,7 @@
 
 import { Component } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card'
-import { LoginForm } from '../components/forms/login'
+import { LoginForm } from '../components/forms/login-form'
 import { Link } from 'react-router-dom'
 
 export default function LoginPage() {
