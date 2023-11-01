@@ -7,42 +7,46 @@ import useRefresh from './useRefresh'
 import { AxiosError } from 'axios'
 import api, { HTTPMethod } from '../lib/api'
 
-
-const moneyStacksRequestSchema = z.void()
-const moneyStacksResponseSchema = z.array(
+const transactionsRequestSchema = z.object({
+	moneyStackId: z.string().optional(),
+})
+const transactionsResponseSchema = z.array(
 	z.object({
 		id: z.string(),
 		title: z.string(),
-		description: z.string().nullable(),
-		initialAmount: z.number(),
-		previousAmount: z.number(),
-		currentAmount: z.number(),
+		description: z.string().optional().nullable(),
+		amount: z.number(),
 		createdAt: z.string(),
 		updatedAt: z.string(),
 		userId: z.string(),
+		moneyStackId: z.string(),
 	})
 )
 
-export type MoneyStacksRequest = z.infer<typeof moneyStacksRequestSchema>
-export type MoneyStacksResponse = z.infer<typeof moneyStacksResponseSchema>
+export type TransactionsRequest = z.infer<typeof transactionsRequestSchema>
+export type TransactionsResponse = z.infer<typeof transactionsResponseSchema>
 
-const getMoneyStacks = api<MoneyStacksRequest, MoneyStacksResponse>({
+const getTransactions = api<TransactionsRequest, TransactionsResponse>({
 	method: HTTPMethod.GET,
-	requestSchema: moneyStacksRequestSchema,
-	responseSchema: moneyStacksResponseSchema,
+	requestSchema: transactionsRequestSchema,
+	responseSchema: transactionsResponseSchema,
 })
 
-function useMoneyStacks() {
+function useTransactions(moneyStackId: string) {
 	const navigate = useNavigate()
 
 	const { mutate: refresh } = useRefresh()
 
 	return useQuery({
-		queryKey: 'moneyStacks',
+		queryKey: ['transactions', moneyStackId],
 		queryFn: function () {
-			return getMoneyStacks('/money-stacks', undefined, {
-				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-			})
+			return getTransactions(
+				'/transactions',
+				{ moneyStackId },
+				{
+					Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+				}
+			)
 		},
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
@@ -68,4 +72,4 @@ function useMoneyStacks() {
 	})
 }
 
-export default useMoneyStacks
+export default useTransactions

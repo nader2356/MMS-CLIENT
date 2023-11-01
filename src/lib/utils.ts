@@ -17,3 +17,6 @@ export function formatMoney(amount: number): string {
 		return `${formattedDt} DT`
 	}
 }
+  export function formatDateString(date: string) {
+    return new Date(date).toLocaleDateString()
+  }

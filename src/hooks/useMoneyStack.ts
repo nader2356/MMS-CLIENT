@@ -7,40 +7,37 @@ import useRefresh from './useRefresh'
 import { AxiosError } from 'axios'
 import api, { HTTPMethod } from '../lib/api'
 
-
-const moneyStacksRequestSchema = z.void()
-const moneyStacksResponseSchema = z.array(
-	z.object({
-		id: z.string(),
-		title: z.string(),
-		description: z.string().nullable(),
-		initialAmount: z.number(),
-		previousAmount: z.number(),
-		currentAmount: z.number(),
-		createdAt: z.string(),
-		updatedAt: z.string(),
-		userId: z.string(),
-	})
-)
-
-export type MoneyStacksRequest = z.infer<typeof moneyStacksRequestSchema>
-export type MoneyStacksResponse = z.infer<typeof moneyStacksResponseSchema>
-
-const getMoneyStacks = api<MoneyStacksRequest, MoneyStacksResponse>({
-	method: HTTPMethod.GET,
-	requestSchema: moneyStacksRequestSchema,
-	responseSchema: moneyStacksResponseSchema,
+const moneyStackRequestSchema = z.void()
+const moneyStackResponseSchema = z.object({
+	id: z.string(),
+	title: z.string(),
+	description: z.string().nullable(),
+	initialAmount: z.number(),
+	previousAmount: z.number(),
+	currentAmount: z.number(),
+	createdAt: z.string(),
+	updatedAt: z.string(),
+	userId: z.string(),
 })
 
-function useMoneyStacks() {
+export type MoneyStackRequest = z.infer<typeof moneyStackRequestSchema>
+export type MoneyStackResponse = z.infer<typeof moneyStackResponseSchema>
+
+const getMoneyStack = api<MoneyStackRequest, MoneyStackResponse>({
+	method: HTTPMethod.GET,
+	requestSchema: moneyStackRequestSchema,
+	responseSchema: moneyStackResponseSchema,
+})
+
+function useMoneyStack(id: string) {
 	const navigate = useNavigate()
 
 	const { mutate: refresh } = useRefresh()
 
 	return useQuery({
-		queryKey: 'moneyStacks',
+		queryKey: ['moneyStack', id],
 		queryFn: function () {
-			return getMoneyStacks('/money-stacks', undefined, {
+			return getMoneyStack(`/money-stacks/${id}`, undefined, {
 				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
 			})
 		},
@@ -68,4 +65,4 @@ function useMoneyStacks() {
 	})
 }
 
-export default useMoneyStacks
+export default useMoneyStack
