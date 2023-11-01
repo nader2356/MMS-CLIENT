@@ -1,5 +1,3 @@
-'use client'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -10,9 +8,10 @@ import React, { SetStateAction } from 'react'
 import { Form } from 'react-router-dom'
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
+import { Textarea } from '../ui/textarea'
 import { Button } from '../ui/button'
 import useCreateMoneyStack from '../../hooks/useCreateMoneyStack'
-import { Textarea } from '../ui/textarea'
+
 
 const createMoneyStack = z.object({
 	title: z.string().min(3),
@@ -34,13 +33,21 @@ export function CreateMoneyStackForm({ setIsShowDialog }: Props) {
 		},
 	})
 
-	const { mutate: createMoneyStackFn, isLoading: isLoadingCreateMoneyStack } =
+	const { mutate: createMoneyStackFn, isPending: isPendingCreateMoneyStack } =
 		useCreateMoneyStack()
+
+	
 
 	async function onSubmit(values: z.infer<typeof createMoneyStack>) {
 		createMoneyStackFn({
 			...values,
 			initialAmount: values.initialAmount * 1000,
+			id: '',
+			previousAmount: 0,
+			currentAmount: 0,
+			createdAt: '',
+			updatedAt: '',
+			userId: ''
 		})
 		setIsShowDialog(false)
 	}
@@ -66,7 +73,7 @@ export function CreateMoneyStackForm({ setIsShowDialog }: Props) {
 					render={({ field }) => (
 						<FormItem>
 							<FormControl>
-                             <Textarea {...field} placeholder='Description' />
+								<Textarea {...field} placeholder='Description' />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -90,14 +97,14 @@ export function CreateMoneyStackForm({ setIsShowDialog }: Props) {
 								/>
 							</FormControl>
 							<FormDescription>
-                              Please add the money amount in DT (e.g., 1000DT).
+								Please add the money amount in DT (e.g., 1000DT).
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
 				<Button type='submit' className='w-full'>
-					{isLoadingCreateMoneyStack ? (
+					{isPendingCreateMoneyStack ? (
 						<Loader2 className='animate-spin' size={24} />
 					) : (
 						'Create money stack'

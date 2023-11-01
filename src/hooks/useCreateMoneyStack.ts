@@ -5,20 +5,17 @@ import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import useRefresh from './useRefresh'
 import { AxiosError } from 'axios'
-import { MoneyStacksResponseType } from './useMoneyStacks'
+import { MoneyStacksResponse} from './useMoneyStacks'
 import api, { HTTPMethod } from '../lib/api'
 
-const CreateMoneyStackRequest = z.object({
+const createMoneyStackRequestSchema = z.object({
 	title: z.string(),
 	description: z.string().optional().nullable(),
 	initialAmount: z.number(),
 })
 
-export type CreateMoneyStackRequestType = z.infer<
-	typeof CreateMoneyStackRequest
->
 
-const CreateMoneyStackResponse = z.object({
+const createMoneyStackResponseSchma = z.object({
 	id: z.string(),
 	title: z.string(),
 	description: z.string().optional().nullable(),
@@ -30,19 +27,20 @@ const CreateMoneyStackResponse = z.object({
 	userId: z.string(),
 })
 
-export type CreateMoneyStackResponseType = z.infer<
-	typeof CreateMoneyStackResponse
+export type CreateMoneyStackRequest = z.infer<
+	typeof createMoneyStackRequestSchema
+>
+export type CreateMoneyStackResponse = z.infer<
+	typeof createMoneyStackResponseSchma
 >
 
-const createMoneyStack = api<
-	CreateMoneyStackRequestType,
-	CreateMoneyStackResponseType
->({
-	method: HTTPMethod.POST,
-	path: '/money-stacks',
-	requestSchema: CreateMoneyStackRequest,
-	responseSchema: CreateMoneyStackResponse,
-})
+const createMoneyStack = api<CreateMoneyStackRequest, CreateMoneyStackResponse>(
+	{
+		method: HTTPMethod.POST,
+		requestSchema: createMoneyStackRequestSchema,
+		responseSchema: createMoneyStackResponseSchma,
+	}
+)
 
 function useCreateMoneyStack() {
 	const navigate = useNavigate()
@@ -51,34 +49,30 @@ function useCreateMoneyStack() {
 	const queryClient = useQueryClient()
 
 	return useMutation<
-		CreateMoneyStackResponseType,
+        CreateMoneyStackRequest,
 		unknown,
-		CreateMoneyStackRequestType
+		CreateMoneyStackResponse
 	>({
 		mutationKey: 'createMoneyStack',
 		mutationFn: function (newMoneyStack) {
-			return createMoneyStack(newMoneyStack, {
+			return createMoneyStack('/money-stacks',newMoneyStack, {
 				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
 			})
 		},
 		onSuccess(newMoneyStack) {
 			const oldData =
-				queryClient.getQueryData<MoneyStacksResponseType>('moneyStacks') || []
-
-			queryClient.setQueryData('moneyStacks', [...oldData, newMoneyStack])
+            queryClient.getQueryData<MoneyStacksResponse>('moneyStacks') || []	
+            queryClient.setQueryData('moneyStacks', [...oldData, newMoneyStack])		
 		},
 		onError(err) {
 			const refreshToken = Cookies.get('refreshToken')
-
 			if (err instanceof AxiosError) {
 				const status = err.response?.status
-
 				if (status === 401 || status === 403) {
 					if (refreshToken) {
 						refresh()
 						return
 					}
-
 					navigate('/auth')
 				}
 			}

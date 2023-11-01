@@ -1,12 +1,12 @@
 
 import { Link } from 'react-router-dom'
 import { buttonVariants } from './ui/button'
-import { MoneyStacksResponseType } from '../hooks/useMoneyStacks'
+import { MoneyStacksResponse } from '../hooks/useMoneyStacks'
 import { cn, formatMoney } from '../lib/utils'
 
 
 type Props = {
-	moneyStack: MoneyStacksResponseType[0]
+	moneyStack: MoneyStacksResponse[0]
 }
 
 export default function MoneyStack({ moneyStack }: Props) {

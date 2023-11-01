@@ -5,32 +5,33 @@ import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import api, { HTTPMethod } from '../lib/api'
 
-const RegisterRequest = z.object({
+const registerRequestSchema = z.object({
 	email: z.string().email(),
 	password: z.string().min(8),
 })
 
-const RegisterResponse = z.object({
+const registerResponseSchema = z.object({
 	accessToken: z.string(),
 	refreshToken: z.string(),
 })
 
-const register = api<
-	z.infer<typeof RegisterRequest>,
-	z.infer<typeof RegisterResponse>
->({
+export type RegisterRequest = z.infer<typeof registerRequestSchema>
+export type RegisterResponse = z.infer<typeof registerResponseSchema>
+
+const register = api<RegisterRequest, RegisterResponse>({
 	method: HTTPMethod.POST,
-	path: '/auth/local/register',
-	requestSchema: RegisterRequest,
-	responseSchema: RegisterResponse,
+	requestSchema: registerRequestSchema,
+	responseSchema: registerResponseSchema,
 })
 
 function useRegister() {
 	const navigate = useNavigate()
 
-	return useMutation({
+	return useMutation<RegisterResponse, unknown, RegisterRequest>({
 		mutationKey: 'register',
-		mutationFn: register,
+		mutationFn: function (data) {
+			return register('/auth/local/register', data)
+		},
 		onSuccess(data) {
 			const { accessToken, refreshToken } = data
 

@@ -14,16 +14,22 @@ export enum HTTPStatusCode {
 
 export default function api<Request, Response>({
 	method,
-	path,
 	requestSchema,
 	responseSchema,
 }: {
 	method: HTTPMethod
-	path: string
 	requestSchema: z.ZodType<Request>
 	responseSchema: z.ZodType<Response>
-}): (data: Request, headers?: Record<string, string>) => Promise<Response> {
-	return function (requestData: Request, headers?: Record<string, string>) {
+}): (
+	path: string,
+	data: Request,
+	headers?: Record<string, string>
+) => Promise<Response> {
+	return function (
+		path: string,
+		requestData: Request,
+		headers?: Record<string, string>
+	) {
 		requestSchema.parse(requestData)
 
 		async function apiCall() {

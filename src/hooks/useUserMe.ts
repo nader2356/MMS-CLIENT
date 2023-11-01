@@ -7,9 +7,8 @@ import useRefresh from './useRefresh'
 import api, { HTTPMethod } from '../lib/api'
 import { AxiosError } from 'axios'
 
-const UserMeRequest = z.void()
-
-const UserMeResponse = z.object({
+const userMeRequestSchema = z.void()
+const userMeResponseSchema = z.object({
 	id: z.string(),
 	email: z.string().email(),
 	name: z.string(),
@@ -17,14 +16,13 @@ const UserMeResponse = z.object({
 	updatedAt: z.string(),
 })
 
-const userMe = api<
-	z.infer<typeof UserMeRequest>,
-	z.infer<typeof UserMeResponse>
->({
+export type UserMeRequest = z.infer<typeof userMeRequestSchema>
+export type UserMeResponse = z.infer<typeof userMeResponseSchema>
+
+const userMe = api<UserMeRequest, UserMeResponse>({
 	method: HTTPMethod.GET,
-	path: '/users/me',
-	requestSchema: UserMeRequest,
-	responseSchema: UserMeResponse,
+	requestSchema: userMeRequestSchema,
+	responseSchema: userMeResponseSchema,
 })
 
 function useUserMe() {
@@ -35,7 +33,7 @@ function useUserMe() {
 	return useQuery({
 		queryKey: ['userMe', localStorage.getItem('accessToken')],
 		queryFn: function () {
-			return userMe(undefined, {
+			return userMe('/users/me', undefined, {
 				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
 			})
 		},

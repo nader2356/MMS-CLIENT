@@ -8,21 +8,19 @@ import AuthContext from '../contexts/AuthContext'
 import { AxiosError } from 'axios'
 
 
-const RefreshRequest = z.void()
-
-const RefreshResponse = z.object({
+const refreshRequestSchema = z.void()
+const refreshResponseSchema = z.object({
 	accessToken: z.string(),
 	refreshToken: z.string(),
 })
 
-const refresh = api<
-	z.infer<typeof RefreshRequest>,
-	z.infer<typeof RefreshResponse>
->({
+export type RefreshResquest = z.infer<typeof refreshRequestSchema>
+export type RefreshResponse = z.infer<typeof refreshResponseSchema>
+
+const refresh = api<RefreshResquest, RefreshResponse>({
 	method: HTTPMethod.POST,
-	path: '/auth/refresh',
-	requestSchema: RefreshRequest,
-	responseSchema: RefreshResponse,
+	requestSchema: refreshRequestSchema,
+	responseSchema: refreshResponseSchema,
 })
 
 function useRefresh() {
@@ -32,7 +30,7 @@ function useRefresh() {
 	return useMutation({
 		mutationKey: 'refresh',
 		mutationFn: function () {
-			return refresh(undefined, {
+			return refresh('/auth/refresh', undefined, {
 				Authorization: `Bearer ${Cookies.get('refreshToken')}`,
 			})
 		},
