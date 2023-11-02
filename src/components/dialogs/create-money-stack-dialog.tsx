@@ -5,12 +5,12 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from '../components/ui/dialog'
+} from '../ui/dialog'
 
-import { buttonVariants } from './ui/button'
-import { CreateMoneyStackForm } from './forms/create-money-stack-form'
+import { buttonVariants } from '../ui/button'
+import { CreateMoneyStackForm } from '../forms/create-money-stack-form'
 import { useState } from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 export default function CreateMoneyStackDialog() {
 	const [isShowDialog, setIsShowDialog] = useState(false)

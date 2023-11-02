@@ -49,9 +49,9 @@ function useCreateMoneyStack() {
 	const queryClient = useQueryClient()
 
 	return useMutation<
-        CreateMoneyStackRequest,
-		unknown,
-		CreateMoneyStackResponse
+	CreateMoneyStackResponse,
+	unknown,
+	CreateMoneyStackRequest
 	>({
 		mutationKey: 'createMoneyStack',
 		mutationFn: function (newMoneyStack) {

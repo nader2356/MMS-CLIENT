@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader } from '../components/ui/card'
 import { Loader2 } from 'lucide-react'
 
 import MoneyStack from "../components/money-stack"
-import CreateMoneyStackDialog from "../components/create-money-stack-dialog"
+import CreateMoneyStackDialog from "../components/dialogs/create-money-stack-dialog"
 
 export default function HomePage() {
 	const { data: moneyStacks, isLoading: isLoadingMoneyStacks } =
