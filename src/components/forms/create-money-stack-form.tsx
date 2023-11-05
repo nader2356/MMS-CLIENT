@@ -41,13 +41,7 @@ export function CreateMoneyStackForm({ setIsShowDialog }: Props) {
 	async function onSubmit(values: z.infer<typeof createMoneyStack>) {
 		createMoneyStackFn({
 			...values,
-			initialAmount: values.initialAmount * 1000,
-			id: '',
-			previousAmount: 0,
-			currentAmount: 0,
-			createdAt: '',
-			updatedAt: '',
-			userId: ''
+			initialAmount: values.initialAmount * 1000
 		})
 		setIsShowDialog(false)
 	}

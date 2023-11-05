@@ -54,15 +54,31 @@ export function CreateTransactionForm({ setIsShowDialog, moneyStack }: Props) {
 				moneyStackId: moneyStack.id,
 			})
 
-			const oldData = queryClient.getQueryData([
-				'transactions',
-				moneyStack.id,
-			]) as TransactionsResponse
+			const transactionsQueryKey = ['transactions', moneyStack.id]
+			const moneyStackQueryKey = ['moneyStack', moneyStack.id]
 
-			queryClient.setQueryData(
-				['transactions', moneyStack.id],
-				[...oldData, newTransaction]
-			)
+			const oldTransactionsData =
+				queryClient.getQueryData<TransactionsResponse>(transactionsQueryKey)
+
+			if (oldTransactionsData) {
+				queryClient.setQueryData(transactionsQueryKey, [
+					...oldTransactionsData,
+					newTransaction,
+				])
+			}
+
+			const oldMoneyStackData =
+				queryClient.getQueryData<MoneyStackResponse>(moneyStackQueryKey)
+
+			if (oldMoneyStackData) {
+				const { currentAmount } = oldMoneyStackData
+
+				queryClient.setQueryData(moneyStackQueryKey, {
+					...oldMoneyStackData,
+					previousAmount: currentAmount,
+					currentAmount: currentAmount - newTransaction.amount,
+				})
+			}
 
 			setIsShowDialog(false)
 		} catch (err) {
