@@ -10,7 +10,7 @@ import { FormControl, FormDescription, FormField, FormItem, FormMessage } from '
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { Button } from '../ui/button'
-import useCreateMoneyStack from '../../hooks/useCreateMoneyStack'
+import useCreateMoneyStack from '../../hooks/mutations/use-create-money-stack'
 
 
 const createMoneyStack = z.object({

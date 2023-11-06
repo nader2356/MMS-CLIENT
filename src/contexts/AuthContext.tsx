@@ -1,7 +1,8 @@
 
 import { createContext } from 'react'
 import { useQueryClient } from 'react-query'
-import useUserMe from '../hooks/useUserMe'
+import useUserMe from '../hooks/queries/use-user-me'
+
 import FullPageSpinner from '../components/full-page-spinner'
 
 type User = {
@@ -35,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const queryClient = useQueryClient()
 
 	function clearUserMe() {
-		queryClient.setQueryData('userMe', null)
+		queryClient.setQueryData(['userMe'], null)
 	}
 
 	

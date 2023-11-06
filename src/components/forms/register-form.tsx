@@ -6,10 +6,11 @@ import * as z from 'zod'
 
 
 import { Loader2 } from 'lucide-react'
-import useRegister from '../../hooks/useRegister'
+
 import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import useRegister from '../../hooks/mutations/use-register'
 
 
 const registerFormSchema = z.object({
@@ -28,7 +29,7 @@ export function RegisterForm() {
 		},
 	})
 
-	const { mutate: register, isLoading } = useRegister()
+	const { mutate: register, isPending } = useRegister()
 
 	async function onSubmit(values: z.infer<typeof registerFormSchema>) {
 		register(values)
@@ -74,7 +75,7 @@ export function RegisterForm() {
 					)}
 				/>
 				<Button type='submit' className='w-full'>
-					{isLoading ? (
+					{isPending ? (
 						<Loader2 className='animate-spin' size={24} />
 					) : (
 						'Register'

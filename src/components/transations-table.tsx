@@ -1,7 +1,5 @@
-import useTransactions, { TransactionsResponse } from '../hooks/useTransactions'
+
 import FullPageSpinner from './full-page-spinner'
-
-
 import { ChevronRight, MoreHorizontal } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import {
@@ -13,12 +11,15 @@ import {
 	DropdownMenuTrigger,
 } from '../components/ui/dropdown-menu'
 import DataTable from './data-table'
-import { MoneyStackResponse } from '../hooks/useMoneyStack'
+
 import { formatDateString, formatMoney } from '../lib/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import { Transaction } from '../shemas/transaction'
+import { MoneyStack } from '../shemas/money-stack'
+import useTransactions from '../hooks/queries/use-transactions'
 
 type Props = {
-	moneyStack: MoneyStackResponse
+	moneyStack: MoneyStack
 }
 
 export default function TransactionTable({ moneyStack }: Props) {
@@ -56,7 +57,7 @@ export default function TransactionTable({ moneyStack }: Props) {
 	)
 }
           
-const columns: ColumnDef<TransactionsResponse[number]>[] = [
+const columns: Array<ColumnDef<Transaction>> = [
 	{
 		accessorKey: 'title',
 		header: 'Title',

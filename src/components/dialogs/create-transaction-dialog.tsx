@@ -3,12 +3,13 @@ import { buttonVariants } from '../ui/button'
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { CreateTransactionForm } from '../forms/create-transation-form'
-import { MoneyStackResponse } from '../../hooks/useMoneyStack'
+
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
+import { MoneyStack } from '../../shemas/money-stack'
 
 
 type Props = {
-	moneyStack: MoneyStackResponse
+	moneyStack: MoneyStack
 }
 
 export default function CreateTransactionDialog({ moneyStack }: Props) {

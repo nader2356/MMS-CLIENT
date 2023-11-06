@@ -2,7 +2,7 @@
 
 
 import { Link } from 'react-router-dom'
-import useAuth from '../hooks/useAuth'
+import useAuth from '../hooks/use-auth'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'

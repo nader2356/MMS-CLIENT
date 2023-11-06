@@ -1,5 +1,3 @@
-'use client'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -7,10 +5,10 @@ import * as z from 'zod'
 import { Loader2 } from 'lucide-react'
 import React, { SetStateAction } from 'react'
 
-import { useQueryClient } from 'react-query'
-import { MoneyStackResponse } from '../../hooks/useMoneyStack'
-import useCreateTransaction from '../../hooks/useCreateTransaction'
-import { TransactionsResponse } from '../../hooks/useTransactions'
+import { useQueryClient } from '@tanstack/react-query'
+import { MoneyStack } from '../../shemas/money-stack'
+import useCreateTransaction from '../../hooks/mutations/use-create-transaction'
+import { Transaction } from '../../shemas/transaction'
 import { Form } from 'react-router-dom'
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
@@ -26,7 +24,7 @@ const createTransactionSchema = z.object({
 
 type Props = {
 	setIsShowDialog: React.Dispatch<SetStateAction<boolean>>
-	moneyStack: MoneyStackResponse
+	moneyStack: MoneyStack
 }
 
 export function CreateTransactionForm({ setIsShowDialog, moneyStack }: Props) {
@@ -41,7 +39,7 @@ export function CreateTransactionForm({ setIsShowDialog, moneyStack }: Props) {
 
 	const {
 		mutateAsync: createTransactionAsync,
-		isLoading: isLoadingCreateTransaction,
+		isPending: isPendingCreateTransaction,
 	} = useCreateTransaction()
 
 	const queryClient = useQueryClient()
@@ -58,7 +56,7 @@ export function CreateTransactionForm({ setIsShowDialog, moneyStack }: Props) {
 			const moneyStackQueryKey = ['moneyStack', moneyStack.id]
 
 			const oldTransactionsData =
-				queryClient.getQueryData<TransactionsResponse>(transactionsQueryKey)
+				queryClient.getQueryData<Array<Transaction>>(transactionsQueryKey)
 
 			if (oldTransactionsData) {
 				queryClient.setQueryData(transactionsQueryKey, [
@@ -68,7 +66,7 @@ export function CreateTransactionForm({ setIsShowDialog, moneyStack }: Props) {
 			}
 
 			const oldMoneyStackData =
-				queryClient.getQueryData<MoneyStackResponse>(moneyStackQueryKey)
+				queryClient.getQueryData<MoneyStack>(moneyStackQueryKey)
 
 			if (oldMoneyStackData) {
 				const { currentAmount } = oldMoneyStackData
@@ -138,7 +136,7 @@ export function CreateTransactionForm({ setIsShowDialog, moneyStack }: Props) {
 					)}
 				/>
 				<Button type='submit' className='w-full'>
-					{isLoadingCreateTransaction ? (
+					{isPendingCreateTransaction ? (
 						<Loader2 className='animate-spin' size={24} />
 					) : (
 						'Create money stack'
@@ -147,4 +145,4 @@ export function CreateTransactionForm({ setIsShowDialog, moneyStack }: Props) {
 			</form>
 		</Form>
 	)
-                    }
+}

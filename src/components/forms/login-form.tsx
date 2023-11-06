@@ -9,7 +9,8 @@ import { Input } from '../ui/input'
 
 import { Loader2 } from 'lucide-react'
 import { Button } from '../ui/button'
-import useLogin from '../../hooks/useLogin'
+import useLogin from '../../hooks/mutations/use-login'
+
 
 const loginFormSchema = z.object({
 	email: z.string().email(),
@@ -25,7 +26,7 @@ export function LoginForm() {
 		},
 	})
    
-    const { mutate: login, isLoading } = useLogin()
+    const { mutate: login, isPending: isPendingLogin  } = useLogin()
 
 	async function onSubmit(values: z.infer<typeof loginFormSchema>) {
 		login(values)
@@ -59,7 +60,11 @@ export function LoginForm() {
 					)}
 				/>
 				<Button type='submit' className='w-full'>
-                {isLoading ? <Loader2 className='animate-spin' size={24} /> : 'Login'}
+                {isPendingLogin ? (
+						<Loader2 className='animate-spin' size={24} />
+					) : (
+						'Login'
+					)}
 				</Button>
 			</form>
 		</Form>

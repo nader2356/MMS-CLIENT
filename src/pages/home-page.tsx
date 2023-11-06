@@ -1,12 +1,12 @@
 import NavBar from "../components/nav-bar"
-import useAuth from "../hooks/useAuth"
-import useMoneyStacks from "../hooks/useMoneyStacks"
+
 import { Card, CardContent, CardHeader } from '../components/ui/card'
 
 import { Loader2 } from 'lucide-react'
 
 import MoneyStack from "../components/money-stack"
 import CreateMoneyStackDialog from "../components/dialogs/create-money-stack-dialog"
+import useMoneyStacks from "../hooks/queries/use-money-stacks"
 
 export default function HomePage() {
 	const { data: moneyStacks, isLoading: isLoadingMoneyStacks } =
